@@ -11,3 +11,7 @@ keywords = ["ethereum", "web3", "mpc", "tss"]
 clap = { version = "4.0.32", features = ["derive", "env", "unicode", "wrap_help"] }
 color-eyre = "0.6.2"
 eyre = "0.6.8"
+futures = "0.3.25"
+rocket = { version = "0.5.0-rc.1", default-features = false, features = ["json"] }
+serde = { version = "1.0.152", features = ["derive"] }
+tokio = { version = "1.24.1", features = ["macros"] }
