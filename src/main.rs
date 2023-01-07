@@ -1,6 +1,7 @@
 use clap::Parser;
 
 use tss_cli::opts::tss::{Opts, Subcommands};
+use tss_cli::tss::server;
 
 fn main() -> eyre::Result<()> {
     let opts = Opts::parse();
@@ -8,7 +9,7 @@ fn main() -> eyre::Result<()> {
     match opts.sub {
         // Constants
         Subcommands::Server => {
-            println!("{}", "hello tss server");
+            _ = server::run();
         }
     }
 
