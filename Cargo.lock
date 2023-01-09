@@ -3418,6 +3418,7 @@ dependencies = [
  "async-sse",
  "clap 4.0.32",
  "color-eyre",
+ "curv-kzen",
  "eyre",
  "futures",
  "multi-party-ecdsa",
