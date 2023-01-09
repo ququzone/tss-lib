@@ -4,4 +4,4 @@
 mod common;
 
 pub mod server;
-pub mod kengen;
+pub mod keygen;

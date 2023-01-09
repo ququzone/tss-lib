@@ -2,7 +2,7 @@ use clap::Parser;
 
 use tss_cli::opts::tss::{Opts, Subcommands};
 use tss_cli::tss::server;
-use tss_cli::tss::kengen;
+use tss_cli::tss::keygen;
 
 fn main() -> eyre::Result<()> {
     let opts = Opts::parse();
@@ -19,7 +19,7 @@ fn main() -> eyre::Result<()> {
             index, threshold, number_of_parties,
             output,
         } => {
-            _ = kengen::run(&server_url, &room, index, threshold, number_of_parties, &output);
+            _ = keygen::run(&server_url, &room, index, threshold, number_of_parties, &output);
         }
     }
 
