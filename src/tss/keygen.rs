@@ -10,7 +10,9 @@ use super::common::join_computation;
 pub async fn run(
     server_url: &str,
     room: &str,
-    index: u16, threshold: u16, number_of_parties: u16,
+    index: u16,
+    threshold: u16,
+    number_of_parties: u16,
     output: &str,
 ) -> Result<()> {
     let mut output_file = tokio::fs::OpenOptions::new()
@@ -23,7 +25,7 @@ pub async fn run(
     let (_i, incoming, outgoing) = join_computation(server_url, room)
         .await
         .context("join computation")?;
-    
+
     let incoming = incoming.fuse();
     tokio::pin!(incoming);
     tokio::pin!(outgoing);

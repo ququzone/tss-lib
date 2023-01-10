@@ -1,8 +1,8 @@
 use clap::Parser;
 
 use tss_cli::opts::tss::{Opts, Subcommands};
-use tss_cli::tss::{server, sign};
 use tss_cli::tss::keygen;
+use tss_cli::tss::{server, sign};
 
 fn main() -> eyre::Result<()> {
     let opts = Opts::parse();
@@ -11,15 +11,24 @@ fn main() -> eyre::Result<()> {
         // Server
         Subcommands::Server => {
             _ = server::run();
-        },
+        }
         // Keygen
-        Subcommands::Keygen { 
+        Subcommands::Keygen {
             server_url,
             room,
-            index, threshold, number_of_parties,
+            index,
+            threshold,
+            number_of_parties,
             output,
         } => {
-            _ = keygen::run(&server_url, &room, index, threshold, number_of_parties, &output);
+            _ = keygen::run(
+                &server_url,
+                &room,
+                index,
+                threshold,
+                number_of_parties,
+                &output,
+            );
         }
         // Sign transaction
         Subcommands::SignTx {
@@ -27,19 +36,16 @@ fn main() -> eyre::Result<()> {
             room,
             parties,
             local_share,
-            output 
+            output,
         } => {
             let data = output.as_bytes();
-            let signature = sign::run(
-                &server_url,
-                &room,
-                &local_share,
-                parties,
-                data,
-            );
+            let signature = sign::run(&server_url, &room, &local_share, parties, data);
             let signature = serde_json::to_string(&signature.expect("sign data fail"));
-            println!("Signature: {}", signature.expect("serialize signature fail"));
-        },
+            println!(
+                "Signature: {}",
+                signature.expect("serialize signature fail")
+            );
+        }
     }
 
     Ok(())

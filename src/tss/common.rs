@@ -2,9 +2,9 @@ use std::convert::TryInto;
 
 use anyhow::{Context, Result};
 use futures::{Sink, Stream, StreamExt, TryStreamExt};
+use round_based::Msg;
 use serde::{de::DeserializeOwned, Deserialize, Serialize};
 use surf::Url;
-use round_based::Msg;
 
 pub async fn join_computation<M>(
     address: &str,

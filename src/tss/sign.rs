@@ -1,16 +1,31 @@
+use std::str::FromStr;
+
 use anyhow::{anyhow, Context, Result};
 use futures::{SinkExt, StreamExt, TryStreamExt};
 use round_based::async_runtime::AsyncProtocol;
 use round_based::Msg;
 
-use curv::arithmetic::Converter;
+use curv::elliptic::curves::Secp256k1;
 use curv::BigInt;
+use curv::{arithmetic::Converter, elliptic::curves::Scalar};
 
-use multi_party_ecdsa::protocols::multi_party_ecdsa::gg_2020::{state_machine::sign::{
-    OfflineStage, SignManual,
-}, party_i::SignatureRecid};
+use multi_party_ecdsa::protocols::multi_party_ecdsa::gg_2020::{
+    party_i::SignatureRecid,
+    state_machine::sign::{OfflineStage, SignManual},
+};
 
 use super::common::join_computation;
+
+pub struct Signature {
+    pub r: Scalar<Secp256k1>,
+    pub s: Scalar<Secp256k1>,
+    pub recid: u8,
+}
+
+pub fn to_string(value: SignatureRecid) -> Result<String> {
+    let string = String::from_str("");
+    Ok(string.expect(""))
+}
 
 #[tokio::main]
 pub async fn run(
@@ -18,7 +33,7 @@ pub async fn run(
     room: &str,
     local_share: &str,
     parties: Vec<u16>,
-    data:  &[u8],
+    data: &[u8],
 ) -> Result<SignatureRecid> {
     let local_share = tokio::fs::read(local_share)
         .await
@@ -48,10 +63,8 @@ pub async fn run(
     tokio::pin!(incoming);
     tokio::pin!(outgoing);
 
-    let (signing, partial_signature) = SignManual::new(
-        BigInt::from_bytes(data),
-        completed_offline_stage,
-    )?;
+    let (signing, partial_signature) =
+        SignManual::new(BigInt::from_bytes(data), completed_offline_stage)?;
 
     outgoing
         .send(Msg {

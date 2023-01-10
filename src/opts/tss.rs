@@ -30,11 +30,7 @@ pub enum Subcommands {
             default_value = "http://localhost:8000/"
         )]
         server_url: String,
-        #[clap(
-            long,
-            value_name = "ROOM",
-            default_value = "default-keygen"
-        )]
+        #[clap(long, value_name = "ROOM", default_value = "default-keygen")]
         room: String,
         #[clap(long, short)]
         index: u16,
@@ -57,11 +53,7 @@ pub enum Subcommands {
             default_value = "http://localhost:8000/"
         )]
         server_url: String,
-        #[clap(
-            long,
-            value_name = "ROOM",
-            default_value = "default-keygen",
-        )]
+        #[clap(long, value_name = "ROOM", default_value = "default-keygen")]
         room: String,
         #[clap(long, short, use_value_delimiter = true)]
         parties: Vec<u16>,
