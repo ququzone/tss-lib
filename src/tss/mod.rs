@@ -5,4 +5,4 @@ mod common;
 
 pub mod server;
 pub mod keygen;
-pub mod sign_tx;
+pub mod sign;

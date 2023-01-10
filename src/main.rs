@@ -1,7 +1,7 @@
 use clap::Parser;
 
 use tss_cli::opts::tss::{Opts, Subcommands};
-use tss_cli::tss::{server, sign_tx};
+use tss_cli::tss::{server, sign};
 use tss_cli::tss::keygen;
 
 fn main() -> eyre::Result<()> {
@@ -21,6 +21,7 @@ fn main() -> eyre::Result<()> {
         } => {
             _ = keygen::run(&server_url, &room, index, threshold, number_of_parties, &output);
         }
+        // Sign transaction
         Subcommands::SignTx {
             server_url,
             room,
@@ -28,7 +29,16 @@ fn main() -> eyre::Result<()> {
             local_share,
             output 
         } => {
-            _ = sign_tx::run(&server_url, &room, &local_share, parties, output)
+            let data = output.as_bytes();
+            let signature = sign::run(
+                &server_url,
+                &room,
+                &local_share,
+                parties,
+                data,
+            );
+            let signature = serde_json::to_string(&signature.expect("sign data fail"));
+            println!("Signature: {}", signature.expect("serialize signature fail"));
         },
     }
 

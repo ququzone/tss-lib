@@ -6,9 +6,9 @@ use round_based::Msg;
 use curv::arithmetic::Converter;
 use curv::BigInt;
 
-use multi_party_ecdsa::protocols::multi_party_ecdsa::gg_2020::state_machine::sign::{
+use multi_party_ecdsa::protocols::multi_party_ecdsa::gg_2020::{state_machine::sign::{
     OfflineStage, SignManual,
-};
+}, party_i::SignatureRecid};
 
 use super::common::join_computation;
 
@@ -18,8 +18,8 @@ pub async fn run(
     room: &str,
     local_share: &str,
     parties: Vec<u16>,
-    data_to_sign: String,
-) -> Result<()> {
+    data:  &[u8],
+) -> Result<SignatureRecid> {
     let local_share = tokio::fs::read(local_share)
         .await
         .context("cannot read local share")?;
@@ -49,7 +49,7 @@ pub async fn run(
     tokio::pin!(outgoing);
 
     let (signing, partial_signature) = SignManual::new(
-        BigInt::from_bytes(data_to_sign.as_bytes()),
+        BigInt::from_bytes(data),
         completed_offline_stage,
     )?;
 
@@ -69,8 +69,6 @@ pub async fn run(
     let signature = signing
         .complete(&partial_signatures)
         .context("online stage failed")?;
-    let signature = serde_json::to_string(&signature).context("serialize signature")?;
-    println!("{}", signature);
 
-    Ok(())
+    Ok(signature)
 }
