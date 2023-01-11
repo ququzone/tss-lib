@@ -3987,6 +3987,7 @@ dependencies = [
  "curv-kzen",
  "eyre",
  "futures",
+ "hex",
  "multi-party-ecdsa",
  "rlp",
  "rocket",

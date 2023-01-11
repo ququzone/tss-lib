@@ -25,6 +25,38 @@ pub struct Transaction {
 }
 
 impl Transaction {
+    pub fn from(
+        to: &str,
+        nonce: &str,
+        value: &str,
+        gas: &str,
+        gas_price: &str,
+        data: Vec<u8>,
+    ) -> Self {
+        let nonce = U256::from_str(nonce).unwrap();
+        let to = Address::from_str(to).unwrap();
+        let value = U256::from_str(value).unwrap();
+        let gas = U256::from_str(gas).unwrap();
+        let gas_price = U256::from_str(gas_price).unwrap();
+
+        Transaction {
+            to: Some(to),
+            nonce,
+            gas,
+            gas_price,
+            value,
+            data,
+            transaction_type: None,
+            access_list: vec![],
+            max_priority_fee_per_gas: 0.into(),
+        }
+    }
+
+    pub fn sighash(&self, chain_id: u64) -> [u8; 32] {
+        let encoded = &self.encode(chain_id, None);
+        signing::keccak256(encoded.as_ref())
+    }
+
     fn rlp_append_legacy(&self, stream: &mut RlpStream) {
         stream.append(&self.nonce);
         stream.append(&self.gas_price);
@@ -126,7 +158,7 @@ impl Transaction {
         }
     }
 
-    fn encode(&self, chain_id: u64, signature: Option<&Signature>) -> Vec<u8> {
+    pub fn encode(&self, chain_id: u64, signature: Option<&Signature>) -> Vec<u8> {
         match self.transaction_type.map(|t| t.as_u64()) {
             Some(LEGACY_TX_ID) | None => {
                 let stream = self.encode_legacy(chain_id, signature);
@@ -182,35 +214,4 @@ impl Transaction {
             transaction_hash,
         }
     }
-}
-
-pub fn serialize(
-    to: &str,
-    nonce: &str,
-    value: &str,
-    gas: &str,
-    gas_price: &str,
-    data: Vec<u8>,
-    chain_id: u64,
-) -> [u8; 32] {
-    let nonce = U256::from_str(nonce).unwrap();
-    let to = Address::from_str(to).unwrap();
-    let value = U256::from_str(value).unwrap();
-    let gas = U256::from_str(gas).unwrap();
-    let gas_price = U256::from_str(gas_price).unwrap();
-
-    let tx = Transaction {
-        to: Some(to),
-        nonce,
-        gas,
-        gas_price,
-        value,
-        data,
-        transaction_type: None,
-        access_list: vec![],
-        max_priority_fee_per_gas: 0.into(),
-    };
-
-    let encoded = tx.encode(chain_id, None);
-    signing::keccak256(encoded.as_ref())
 }

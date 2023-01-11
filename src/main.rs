@@ -1,8 +1,10 @@
 use clap::Parser;
 
 use tss_cli::opts::tss::{Opts, Subcommands};
-use tss_cli::tss::keygen;
+use tss_cli::tss::{keygen, tx};
 use tss_cli::tss::{server, sign};
+use web3::signing::Signature;
+use web3::types::H256;
 
 fn main() -> eyre::Result<()> {
     let opts = Opts::parse();
@@ -38,13 +40,27 @@ fn main() -> eyre::Result<()> {
             local_share,
             output,
         } => {
-            let data = output.as_bytes();
-            let signature = sign::run(&server_url, &room, &local_share, parties, data);
-            let signature = serde_json::to_string(&signature.expect("sign data fail"));
-            println!(
-                "Signature: {}",
-                signature.expect("serialize signature fail")
+            let t = tx::Transaction::from( 
+                "0x173553c179bbf5af39D8Db41F0B60e4Fc631066a",
+                "0",
+                "100",
+                "10000",
+                "1000000000000",
+                vec![],
             );
+            let sighash = t.sighash(4690);
+
+            let signature = sign::run(&server_url, &room, &local_share, parties, &sighash).unwrap();
+
+            let v = (signature.recid as u64 + 27) + 35 + 4690*2;
+            
+            let signed = t.encode(4690, Some(&Signature {
+                r: H256::from_slice(signature.r.to_bytes().as_ref()),
+                s: H256::from_slice(signature.s.to_bytes().as_ref()),
+                v,
+            }));
+
+            println!("raw transaction: 0x{:x?}", hex::encode(signed))
         }
     }
 
