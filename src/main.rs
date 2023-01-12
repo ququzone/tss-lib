@@ -32,6 +32,23 @@ fn main() -> eyre::Result<()> {
                 &output,
             );
         }
+        // Sign data
+        Subcommands::Sign {
+            server_url,
+            room,
+            parties,
+            local_share,
+            data,
+        } => {
+            let signature =
+                sign::run(&server_url, &room, &local_share, parties, data.as_bytes()).unwrap();
+            println!(
+                "signature {{ r:{}, s:{}, v:{} }}",
+                hex::encode(signature.r.to_bytes().as_ref()),
+                hex::encode(signature.s.to_bytes().as_ref()),
+                signature.recid,
+            );
+        }
         // Sign transaction
         Subcommands::SignTx {
             server_url,

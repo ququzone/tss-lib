@@ -42,6 +42,27 @@ pub enum Subcommands {
         output: String,
     },
 
+    #[clap(name = "sign")]
+    #[clap(visible_alias = "s")]
+    #[clap(about = "Sign message.")]
+    Sign {
+        #[clap(
+            long,
+            env = "SERVER_URL",
+            value_name = "URL",
+            default_value = "http://localhost:8000/"
+        )]
+        server_url: String,
+        #[clap(long, value_name = "ROOM", default_value = "default-keygen")]
+        room: String,
+        #[clap(long, short, use_value_delimiter = true)]
+        parties: Vec<u16>,
+        #[clap(long, short)]
+        local_share: String,
+        #[clap(long, short)]
+        data: String,
+    },
+
     #[clap(name = "sign-tx")]
     #[clap(visible_alias = "st")]
     #[clap(about = "Sign ethereum transaction.")]
