@@ -1,11 +1,11 @@
 use std::str::FromStr;
 
+use rlp::RlpStream;
 use web3::{
     ethabi::ethereum_types::U256,
     signing::{self, Signature},
-    types::{Address, U64, AccessList, SignedTransaction},
+    types::{AccessList, Address, SignedTransaction, U64},
 };
-use rlp::RlpStream;
 
 const LEGACY_TX_ID: u64 = 0;
 const ACCESSLISTS_TX_ID: u64 = 1;

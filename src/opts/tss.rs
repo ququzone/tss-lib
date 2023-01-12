@@ -59,7 +59,19 @@ pub enum Subcommands {
         parties: Vec<u16>,
         #[clap(long, short)]
         local_share: String,
-        #[clap(value_name = "output")]
-        output: String,
+        #[clap(long)]
+        chain_id: u64,
+        #[clap(long)]
+        nonce: String,
+        #[clap(long)]
+        to: String,
+        #[clap(long)]
+        value: String,
+        #[clap(long)]
+        gas: String,
+        #[clap(long)]
+        gas_price: String,
+        #[clap(long, default_value = "")]
+        data: String,
     },
 }

@@ -38,19 +38,23 @@ fn main() -> eyre::Result<()> {
             room,
             parties,
             local_share,
-            output,
+            chain_id,
+            nonce,
+            to,
+            value,
+            gas,
+            gas_price,
+            data,
         } => {
-            let t = tx::Transaction::from( 
-                "0",
-                "0x173553c179bbf5af39D8Db41F0B60e4Fc631066a",
-                "100",
-                "10000",
-                "1000000000000",
-                vec![],
+            let t = tx::Transaction::from(
+                &nonce,
+                &to,
+                &value,
+                &gas,
+                &gas_price,
+                data.as_bytes().to_vec(),
             );
-            let sighash = t.sighash(4690);
-
-            println!("sighash {}", hex::encode(sighash));
+            let sighash = t.sighash(chain_id);
 
             let signature = sign::run(&server_url, &room, &local_share, parties, &sighash).unwrap();
 
@@ -61,13 +65,19 @@ fn main() -> eyre::Result<()> {
                 signature.recid,
             );
 
-            let v = signature.recid as u64 + 35 + 4690*2;
-            
-            let signed = t.encode(4690, Some(&Signature {
-                r: H256::from_slice(signature.r.to_bytes().as_ref()),
-                s: H256::from_slice(signature.s.to_bytes().as_ref()),
-                v,
-            }));
+            let v = match chain_id {
+                0 => signature.recid as u64 + 27,
+                _ => signature.recid as u64 + 35 + chain_id * 2,
+            };
+
+            let signed = t.encode(
+                chain_id,
+                Some(&Signature {
+                    r: H256::from_slice(signature.r.to_bytes().as_ref()),
+                    s: H256::from_slice(signature.s.to_bytes().as_ref()),
+                    v,
+                }),
+            );
 
             println!("raw transaction: 0x{}", hex::encode(signed))
         }

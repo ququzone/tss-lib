@@ -3,8 +3,8 @@ use futures::{SinkExt, StreamExt, TryStreamExt};
 use round_based::async_runtime::AsyncProtocol;
 use round_based::Msg;
 
+use curv::arithmetic::Converter;
 use curv::BigInt;
-use curv::{arithmetic::Converter};
 
 use multi_party_ecdsa::protocols::multi_party_ecdsa::gg_2020::{
     party_i::SignatureRecid,
