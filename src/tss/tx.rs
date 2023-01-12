@@ -26,18 +26,18 @@ pub struct Transaction {
 
 impl Transaction {
     pub fn from(
-        to: &str,
         nonce: &str,
+        to: &str,
         value: &str,
         gas: &str,
         gas_price: &str,
         data: Vec<u8>,
     ) -> Self {
-        let nonce = U256::from_str(nonce).unwrap();
+        let nonce = U256::from_str_radix(nonce, 10).unwrap();
         let to = Address::from_str(to).unwrap();
-        let value = U256::from_str(value).unwrap();
-        let gas = U256::from_str(gas).unwrap();
-        let gas_price = U256::from_str(gas_price).unwrap();
+        let value = U256::from_str_radix(value, 10).unwrap();
+        let gas = U256::from_str_radix(gas, 10).unwrap();
+        let gas_price = U256::from_str_radix(gas_price, 10).unwrap();
 
         Transaction {
             to: Some(to),

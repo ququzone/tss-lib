@@ -41,8 +41,8 @@ fn main() -> eyre::Result<()> {
             output,
         } => {
             let t = tx::Transaction::from( 
-                "0x173553c179bbf5af39D8Db41F0B60e4Fc631066a",
                 "0",
+                "0x173553c179bbf5af39D8Db41F0B60e4Fc631066a",
                 "100",
                 "10000",
                 "1000000000000",
@@ -50,9 +50,18 @@ fn main() -> eyre::Result<()> {
             );
             let sighash = t.sighash(4690);
 
+            println!("sighash {}", hex::encode(sighash));
+
             let signature = sign::run(&server_url, &room, &local_share, parties, &sighash).unwrap();
 
-            let v = (signature.recid as u64 + 27) + 35 + 4690*2;
+            println!(
+                "signature {{ r:{}, s:{}, v:{} }}",
+                hex::encode(signature.r.to_bytes().as_ref()),
+                hex::encode(signature.s.to_bytes().as_ref()),
+                signature.recid,
+            );
+
+            let v = signature.recid as u64 + 35 + 4690*2;
             
             let signed = t.encode(4690, Some(&Signature {
                 r: H256::from_slice(signature.r.to_bytes().as_ref()),
@@ -60,7 +69,7 @@ fn main() -> eyre::Result<()> {
                 v,
             }));
 
-            println!("raw transaction: 0x{:x?}", hex::encode(signed))
+            println!("raw transaction: 0x{}", hex::encode(signed))
         }
     }
 

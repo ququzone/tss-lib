@@ -1,13 +1,10 @@
-use std::str::FromStr;
-
 use anyhow::{anyhow, Context, Result};
 use futures::{SinkExt, StreamExt, TryStreamExt};
 use round_based::async_runtime::AsyncProtocol;
 use round_based::Msg;
 
-use curv::elliptic::curves::Secp256k1;
 use curv::BigInt;
-use curv::{arithmetic::Converter, elliptic::curves::Scalar};
+use curv::{arithmetic::Converter};
 
 use multi_party_ecdsa::protocols::multi_party_ecdsa::gg_2020::{
     party_i::SignatureRecid,
@@ -15,17 +12,6 @@ use multi_party_ecdsa::protocols::multi_party_ecdsa::gg_2020::{
 };
 
 use super::common::join_computation;
-
-pub struct Signature {
-    pub r: Scalar<Secp256k1>,
-    pub s: Scalar<Secp256k1>,
-    pub recid: u8,
-}
-
-pub fn to_string(value: SignatureRecid) -> Result<String> {
-    let string = String::from_str("");
-    Ok(string.expect(""))
-}
 
 #[tokio::main]
 pub async fn run(
