@@ -1,0 +1,24 @@
+[package]
+name = "tss-lib"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/ququzone/tss-lib"
+keywords = ["ethereum", "web3", "mpc", "tss"]
+
+[dependencies]
+anyhow = "1.0.68"
+round-based = "0.1.7"
+serde = { version = "1.0.152", features = ["derive"] }
+serde_json = "1.0.91"
+surf = "2.3.2"
+async-sse = "5.1.0"
+futures = "0.3.25"
+rocket = { version = "0.5.0-rc.1", default-features = false, features = ["json"] }
+tokio = { version = "1.24.1", features = ["macros"] }
+
+multi-party-ecdsa = { git = "https://github.com/ZenGo-X/multi-party-ecdsa" }
+curv-kzen = "0.9.0"
+web3 = "0.18.0"
+rlp = "0.5.2"

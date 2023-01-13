@@ -1,5 +1,13 @@
-tss cli
+tss lib
 =======
+
+## Build
+
+```
+cargo build --release
+```
+
+## Run
 
 ```
 $ tss-cli -h

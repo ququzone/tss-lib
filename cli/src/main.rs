@@ -1,8 +1,8 @@
 use clap::Parser;
 
 use tss_cli::opts::tss::{Opts, Subcommands};
-use tss_cli::tss::{keygen, tx};
-use tss_cli::tss::{server, sign};
+use tss_lib::{keygen, tx};
+use tss_lib::{server, sign};
 use web3::signing::Signature;
 use web3::types::H256;
 
@@ -43,7 +43,7 @@ fn main() -> eyre::Result<()> {
             let signature =
                 sign::run(&server_url, &room, &local_share, parties, data.as_bytes()).unwrap();
             println!(
-                "signature {{ r:{}, s:{}, v:{} }}",
+                "signature {{ r:0x{}, s:0x{}, v:{} }}",
                 hex::encode(signature.r.to_bytes().as_ref()),
                 hex::encode(signature.s.to_bytes().as_ref()),
                 signature.recid,
@@ -76,7 +76,7 @@ fn main() -> eyre::Result<()> {
             let signature = sign::run(&server_url, &room, &local_share, parties, &sighash).unwrap();
 
             println!(
-                "signature {{ r:{}, s:{}, v:{} }}",
+                "signature {{ r:0x{}, s:0x{}, v:{} }}",
                 hex::encode(signature.r.to_bytes().as_ref()),
                 hex::encode(signature.s.to_bytes().as_ref()),
                 signature.recid,
