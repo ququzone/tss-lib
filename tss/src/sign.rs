@@ -17,13 +17,10 @@ use super::common::join_computation;
 pub async fn run(
     server_url: &str,
     room: &str,
-    local_share: &str,
+    local_share: &[u8],
     parties: Vec<u16>,
     data: &[u8],
 ) -> Result<SignatureRecid> {
-    let local_share = tokio::fs::read(local_share)
-        .await
-        .context("cannot read local share")?;
     let local_share = serde_json::from_slice(&local_share).context("parse local share")?;
     let number_of_parties = parties.len();
 

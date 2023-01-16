@@ -49,7 +49,7 @@ pub extern "C" fn sign(
     let signature = sign::run(
         parse_string(server_url),
         parse_string(room),
-        parse_string(local_share),
+        parse_string(local_share).as_bytes(),
         parties,
         parse_string(data).as_bytes(),
     )

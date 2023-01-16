@@ -8,6 +8,7 @@ import "C"
 import (
 	"fmt"
 	"log"
+	"os"
 	"strconv"
 )
 
@@ -23,10 +24,16 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	localShare, err := os.ReadFile(fmt.Sprintf("local-share%d.json", index))
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	signature := C.sign(
 		C.CString("http://localhost:8000/"),
 		C.CString("default-keygen"),
-		C.CString(fmt.Sprintf("local-share%d.json", index)),
+		C.CString(string(localShare)),
 		C.CString("1,2"),
 		C.CString("hello"),
 	)

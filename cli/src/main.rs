@@ -1,5 +1,5 @@
 use clap::Parser;
-use std::fs::File;
+use std::fs::{self, File};
 use std::io::Write;
 
 use tss_cli::opts::tss::{Opts, Subcommands};
@@ -41,6 +41,8 @@ fn main() -> eyre::Result<()> {
             local_share,
             data,
         } => {
+            let local_share = fs::read(local_share).expect("read the share file");
+
             let signature =
                 sign::run(&server_url, &room, &local_share, parties, data.as_bytes()).unwrap();
             println!(
@@ -64,6 +66,7 @@ fn main() -> eyre::Result<()> {
             gas_price,
             data,
         } => {
+            let local_share = fs::read(local_share).expect("read the share file");
             let t = tx::Transaction::from(
                 &nonce,
                 &to,
