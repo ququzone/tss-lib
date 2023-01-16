@@ -14,7 +14,7 @@ pub fn parse_string(s: *const c_char) -> &'static str {
 }
 
 #[no_mangle]
-pub extern "C" fn c_keygen(
+pub extern "C" fn keygen(
     server_url: *const c_char,
     room: *const c_char,
     index: u16,
