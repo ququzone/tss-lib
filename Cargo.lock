@@ -3912,6 +3912,7 @@ dependencies = [
  "color-eyre",
  "eyre",
  "hex",
+ "rlp",
  "tss-lib",
  "web3",
 ]
@@ -3925,14 +3926,12 @@ dependencies = [
  "curv-kzen",
  "futures",
  "multi-party-ecdsa",
- "rlp",
  "rocket",
  "round-based",
  "serde",
  "serde_json",
  "surf",
  "tokio",
- "web3",
 ]
 
 [[package]]

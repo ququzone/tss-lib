@@ -1,7 +1,8 @@
 use clap::Parser;
 
 use tss_cli::opts::tss::{Opts, Subcommands};
-use tss_lib::{keygen, tx};
+use tss_cli::opts::tx;
+use tss_lib::keygen;
 use tss_lib::{server, sign};
 use web3::signing::Signature;
 use web3::types::H256;

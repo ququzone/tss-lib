@@ -20,5 +20,3 @@ tokio = { version = "1.24.1", features = ["macros"] }
 
 multi-party-ecdsa = { git = "https://github.com/ZenGo-X/multi-party-ecdsa" }
 curv-kzen = "0.9.0"
-web3 = "0.18.0"
-rlp = "0.5.2"

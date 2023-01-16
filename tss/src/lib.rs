@@ -6,4 +6,3 @@ mod common;
 pub mod keygen;
 pub mod server;
 pub mod sign;
-pub mod tx;

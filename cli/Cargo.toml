@@ -14,5 +14,6 @@ eyre = "0.6.8"
 
 hex = "0.4.3"
 web3 = "0.18.0"
+rlp = "0.5.2"
 
 tss-lib = { path = "../tss" }
