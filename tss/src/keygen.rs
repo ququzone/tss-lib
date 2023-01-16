@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Context, Result};
+use anyhow::{anyhow, Context, Result, Ok};
 use futures::StreamExt;
 
 use multi_party_ecdsa::protocols::multi_party_ecdsa::gg_2020::state_machine::keygen::Keygen;
@@ -12,16 +12,8 @@ pub async fn run(
     room: &str,
     index: u16,
     threshold: u16,
-    number_of_parties: u16,
-    output: &str,
-) -> Result<()> {
-    let mut output_file = tokio::fs::OpenOptions::new()
-        .write(true)
-        .create_new(true)
-        .open(output)
-        .await
-        .context("cannot create output file")?;
-
+    number_of_parties: u16
+) -> Result<Vec<u8>> {
     let (_i, incoming, outgoing) = join_computation(server_url, room)
         .await
         .context("join computation")?;
@@ -35,10 +27,7 @@ pub async fn run(
         .run()
         .await
         .map_err(|e| anyhow!("protocol execution terminated with error: {}", e))?;
-    let output = serde_json::to_vec_pretty(&output).context("serialize output")?;
-    tokio::io::copy(&mut output.as_slice(), &mut output_file)
-        .await
-        .context("save output to file")?;
+    let output = serde_json::to_vec_pretty(&output).unwrap();
 
-    Ok(())
+    Ok(output)
 }

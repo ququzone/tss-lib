@@ -1,3 +1,5 @@
+use std::fs::File;
+use std::io::Write;
 use clap::Parser;
 
 use tss_cli::opts::tss::{Opts, Subcommands};
@@ -24,14 +26,17 @@ fn main() -> eyre::Result<()> {
             number_of_parties,
             output,
         } => {
-            _ = keygen::run(
+            let mut output_file = File::create(output)?;
+
+            let mut data = keygen::run(
                 &server_url,
                 &room,
                 index,
                 threshold,
                 number_of_parties,
-                &output,
-            );
+            ).unwrap();
+
+            _ = output_file.write_all(&mut data.as_mut_slice());
         }
         // Sign data
         Subcommands::Sign {
