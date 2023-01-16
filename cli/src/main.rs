@@ -1,6 +1,6 @@
+use clap::Parser;
 use std::fs::File;
 use std::io::Write;
-use clap::Parser;
 
 use tss_cli::opts::tss::{Opts, Subcommands};
 use tss_cli::opts::tx;
@@ -28,13 +28,8 @@ fn main() -> eyre::Result<()> {
         } => {
             let mut output_file = File::create(output)?;
 
-            let mut data = keygen::run(
-                &server_url,
-                &room,
-                index,
-                threshold,
-                number_of_parties,
-            ).unwrap();
+            let mut data =
+                keygen::run(&server_url, &room, index, threshold, number_of_parties).unwrap();
 
             _ = output_file.write_all(&mut data.as_mut_slice());
         }

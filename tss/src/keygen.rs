@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Context, Result, Ok};
+use anyhow::{anyhow, Context, Ok, Result};
 use futures::StreamExt;
 
 use multi_party_ecdsa::protocols::multi_party_ecdsa::gg_2020::state_machine::keygen::Keygen;
@@ -12,7 +12,7 @@ pub async fn run(
     room: &str,
     index: u16,
     threshold: u16,
-    number_of_parties: u16
+    number_of_parties: u16,
 ) -> Result<Vec<u8>> {
     let (_i, incoming, outgoing) = join_computation(server_url, room)
         .await

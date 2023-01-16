@@ -5,7 +5,7 @@ edition = "2021"
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/ququzone/tss-lib"
-keywords = ["ethereum", "web3", "mpc", "tss"]
+keywords = ["mpc", "tss"]
 
 [dependencies]
 anyhow = "1.0.68"

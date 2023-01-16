@@ -5,7 +5,7 @@ edition = "2021"
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/ququzone/tss-cli"
-keywords = ["ethereum", "web3", "mpc", "tss"]
+keywords = ["ethereum", "web3", "mpc", "tss", "cli"]
 
 [dependencies]
 clap = { version = "4.0.32", features = ["derive", "env", "unicode", "wrap_help"] }
