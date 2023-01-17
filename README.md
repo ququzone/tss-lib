@@ -1,6 +1,8 @@
 tss lib
 =======
 
+> Multi-party ECDSA utility library base on ZenGo X [multi-party-ecdsa](https://github.com/ZenGo-X/multi-party-ecdsa)
+
 ## Build
 
 ```
